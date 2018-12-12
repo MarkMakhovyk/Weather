@@ -1,4 +1,4 @@
-package com.mydev.android.myweather.scene;
+package com.mydev.android.myweather.scene.hourlyAdapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -13,19 +13,19 @@ import com.mydev.android.myweather.data.model.ItemListWeather;
 import java.util.Date;
 import java.util.List;
 
-public class DayWeatherAdapter  extends RecyclerView.Adapter<DayWeatherHolder>{
+public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherHolder> {
     Forecast forecast;
     int startPosition;
     int count;
     private static final String TAG = "Forecast";
     private List<ItemListWeather> listWeathers;
-    private static final int COUNT_FORECAST_PER_DAY = 8;
+    private static final int COUNT_FORECAST_PER_DAY = 7;
 
-    public DayWeatherAdapter(Forecast forecast, ItemListWeather item) {
+    public HourlyWeatherAdapter(Forecast forecast, ItemListWeather item) {
         this.forecast = forecast;
         listWeathers = forecast.getList();
         startPosition = forecast.getList().indexOf(item);
-        Log.e(TAG, "DayWeatherAdapter: " + item.getDt() );
+        Log.e(TAG, "HourlyWeatherAdapter: " + item.getDt());
         howCountForecastToday();
 
     }
@@ -52,21 +52,22 @@ public class DayWeatherAdapter  extends RecyclerView.Adapter<DayWeatherHolder>{
                 }
             }
         }
+
         startPosition = start;
-        count = finish-start +1;
+        count = finish - start;
 
 
     }
 
     @Override
-    public DayWeatherHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new DayWeatherHolder(LayoutInflater.from(parent.getContext())
+    public HourlyWeatherHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new HourlyWeatherHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item,parent,false), forecast);
 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DayWeatherHolder holder, int position) {
+    public void onBindViewHolder(@NonNull HourlyWeatherHolder holder, int position) {
         holder.bind(listWeathers.get(startPosition + position));
     }
 
@@ -74,6 +75,8 @@ public class DayWeatherAdapter  extends RecyclerView.Adapter<DayWeatherHolder>{
     public int getItemCount() {
         if ((startPosition) + COUNT_FORECAST_PER_DAY > listWeathers.size()) {
             return listWeathers.size()-startPosition;
+        } else if (count < COUNT_FORECAST_PER_DAY && count + COUNT_FORECAST_PER_DAY < listWeathers.size()) {
+            count = 7;
         }
         return count;
     }

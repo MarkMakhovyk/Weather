@@ -20,7 +20,7 @@ public class OpenWeatherMap {
     private static final String API_KEY = "2842e4fe031b0d2c1fa0294b481ff31a";
 
 
-  Uri ENDPOINT;
+    Uri ENDPOINT;
 
     public void buildUrl(String city) {
         ENDPOINT = Uri
@@ -62,7 +62,7 @@ public class OpenWeatherMap {
             out.close();
             return out.toByteArray();
         } catch (FileNotFoundException e) {
-           return null;
+            return null;
         } finally {
             Log.e(TAG, "getUrlBytes: disconnect");
             connection.disconnect();

@@ -4,7 +4,9 @@ package com.mydev.android.myweather.data.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import com.mydev.android.myweather.data.database.WeatherDbSchema.WeatherTable;
+
+import static com.mydev.android.myweather.data.database.WeatherDbSchema.WeatherTable.Cols;
+import static com.mydev.android.myweather.data.database.WeatherDbSchema.WeatherTable.NAME;
 
 public class WeatherBaseHelper extends SQLiteOpenHelper {
     private static final int VERSION = 1;
@@ -16,10 +18,10 @@ public class WeatherBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table " + WeatherTable.NAME + "(" +
+        db.execSQL("create table " + NAME + "(" +
                 " _id integer primary key autoincrement, " +
-                WeatherTable.Cols.CITY_NAME + ", " +
-                WeatherTable.Cols.JSON + ")"
+                Cols.CITY_NAME + ", " +
+                Cols.JSON + ")"
         );
     }
 

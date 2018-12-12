@@ -9,7 +9,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.mydev.android.myweather.R;
-import com.mydev.android.myweather.data.model.Forecast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +22,7 @@ public class DataWeatherActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pagers_data_weather);
+
         cityName.add("Kyiv");
         cityName.add("Moscow");
         cityName.add("Chernihiv");

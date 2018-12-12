@@ -16,17 +16,19 @@
         android:layout_weight="1"
         android:gravity="center_vertical"
         android:text="date"
-        android:textSize="24sp"
-        android:textColor="@color/cardview_light_background"
-        />
+        android:textSize="24sp" />
 
 
     <ImageView
-        android:id="@+id/icon_weather_hourly"
+        android:id="@+id/icon_weather_day"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_margin="3dp"
-        android:tint="@android:color/white" />
+        android:scaleType="centerCrop"
+        android:background="@drawable/circle"
+        android:elevation="10dp"
+        android:tint="@color/colorYellow"
+        android:padding="2dp" />
 
     <TextView
         android:id="@+id/temp_now"
@@ -36,7 +38,5 @@
         android:layout_weight="1"
         android:gravity="center_vertical"
         android:text="10"
-        android:textSize="24sp"
-        android:textColor="@color/cardview_light_background"
-        />
+        android:textSize="24sp" />
 </LinearLayout>

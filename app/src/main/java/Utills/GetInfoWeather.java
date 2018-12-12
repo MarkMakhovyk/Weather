@@ -23,12 +23,12 @@ public class GetInfoWeather {
                 + DateFormat.getTimeInstance(DateFormat.SHORT, new Locale("ru")).format(new Date(date * 1000L))
                 ;
     } public String getDay(int index) {
-        return new SimpleDateFormat("EEEE", new Locale("ru"))
+        return new SimpleDateFormat("EEE", new Locale("ru"))
                 .format(new Date(forecast.getList().get(index).getDt() * 1000L));
 
     }
     public String getTime(int index) {
-        return new SimpleDateFormat("HH:mm", new Locale("ru"))
+        return new SimpleDateFormat("HH", new Locale("ru"))
                 .format(new Date(forecast.getList().get(index).getDt() * 1000L));
 
     }
@@ -40,19 +40,30 @@ public class GetInfoWeather {
             case "01n" :return R.drawable.clear_sky_n;
             case "02d" :return R.drawable.few_clouds_d;
             case "02n" :return R.drawable.few_clouds_n;
-            case "03d" :return R.drawable.scattered_clouds_d;
-            case "03n" :return R.drawable.scattered_clouds_n;
-            case "04d" :return R.drawable.broken_clouds_d;
-            case "04n" :return R.drawable.broken_clouds_n;
-
-            case "09d" :return R.drawable.shower_rain_d;
-            case "09n" :return R.drawable.shower_rain_n;
-            case "10d" :return R.drawable.rain_d;
-            case "10n" :return R.drawable.rain_n;
-            case "11d" :return R.drawable.thunderstorm_d;
-            case "11n" :return R.drawable.thunderstorm_n;
-            case "13d" :return R.drawable.snow_d;
-            case "13n" :return R.drawable.snow_n;
+            case "03d":
+                return R.drawable.clouds;
+            case "03n":
+                return R.drawable.clouds;
+            case "04d":
+                return R.drawable.clouds;
+            case "04n":
+                return R.drawable.clouds;
+            case "09d":
+                return R.drawable.shower_rain;
+            case "09n":
+                return R.drawable.shower_rain;
+            case "10d":
+                return R.drawable.rain;
+            case "10n":
+                return R.drawable.rain;
+            case "11d":
+                return R.drawable.thunderstorm;
+            case "11n":
+                return R.drawable.thunderstorm;
+            case "13d":
+                return R.drawable.snows;
+            case "13n":
+                return R.drawable.snows;
             case "50d" :return R.drawable.mist_d;
             case "50n" :return R.drawable.mist_n;
         }

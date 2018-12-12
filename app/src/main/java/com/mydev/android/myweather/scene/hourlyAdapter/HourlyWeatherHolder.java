@@ -1,4 +1,4 @@
-package com.mydev.android.myweather.scene;
+package com.mydev.android.myweather.scene.hourlyAdapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -6,21 +6,23 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import Utills.GetInfoWeather;
 import com.mydev.android.myweather.R;
 import com.mydev.android.myweather.data.model.Forecast;
 import com.mydev.android.myweather.data.model.ItemListWeather;
 
-public class DayWeatherHolder extends RecyclerView.ViewHolder {
+import Utills.GetInfoWeather;
+
+public class HourlyWeatherHolder extends RecyclerView.ViewHolder {
     ImageView iconImageView;
     TextView dateTextView;
     TextView temp;
 Forecast forecast;
-    public DayWeatherHolder(@NonNull View itemView, Forecast forecast) {
+
+    public HourlyWeatherHolder(@NonNull View itemView, Forecast forecast) {
         super(itemView);
         temp= (TextView) itemView.findViewById(R.id.temp_now);
         dateTextView = (TextView) itemView.findViewById(R.id.date);
-        iconImageView = (ImageView) itemView.findViewById(R.id.icon_weather_day);
+        iconImageView = (ImageView) itemView.findViewById(R.id.icon_weather_hourly);
         this.forecast = forecast;
     }
 

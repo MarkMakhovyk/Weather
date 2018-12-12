@@ -1,4 +1,4 @@
-package com.mydev.android.myweather.scene;
+package com.mydev.android.myweather.scene.dailyAdapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -6,21 +6,20 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.mydev.android.myweather.R;
-import com.mydev.android.myweather.data.model.ItemListWeather;
 import com.mydev.android.myweather.data.model.Forecast;
+import com.mydev.android.myweather.data.model.ItemListWeather;
 
 import java.util.Date;
 import java.util.List;
 
-public class WeatherAdapter extends RecyclerView.Adapter<WeatherHolder>{
-    private WeatherHolder.OnItemClick mOnItemClick;
+public class DailyForecastAdapter extends RecyclerView.Adapter<DailyForecastHolder> {
+    private DailyForecastHolder.OnItemClick mOnItemClick;
     private Forecast forecast;
     private static final int COUNT_FORECAST_PER_DAY = 8;
     ItemListWeather item;
 
 
-
-    public WeatherAdapter(Forecast forecast, @NonNull WeatherHolder.OnItemClick onItemClick) {
+    public DailyForecastAdapter(Forecast forecast, @NonNull DailyForecastHolder.OnItemClick onItemClick) {
         this.forecast = forecast;
         mOnItemClick = onItemClick;
     }
@@ -41,13 +40,13 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherHolder>{
     }
 
     @Override
-    public WeatherHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new WeatherHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item,parent,false), forecast, mOnItemClick );
+    public DailyForecastHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new DailyForecastHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_day, parent, false), forecast, mOnItemClick);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull WeatherHolder holder, int position) {
+    public void onBindViewHolder(@NonNull DailyForecastHolder holder, int position) {
         holder.bind(forecast.getList().get(position*COUNT_FORECAST_PER_DAY));
 
 
