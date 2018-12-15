@@ -1,4 +1,4 @@
-package com.mydev.android.myweather.scene.hourlyAdapter;
+package com.mydev.android.myweather.ui.hourlyAdapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +29,7 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherHold
         howCountForecastToday();
 
     }
+
 
     private void howCountForecastToday() {
         int start = 0;

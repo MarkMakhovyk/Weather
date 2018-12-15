@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipe"
-    android:background="@color/colorPrimary"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="1dp"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:background="@color/colorPrimary"
+    android:padding="1dp">
 
 
     <android.support.constraint.ConstraintLayout
@@ -157,14 +156,14 @@
 
 
             <TextView
-                android:id="@+id/temp_now"
+                android:id="@+id/forecast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:textSize="80sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/city_list"
                 tools:text="8 \u00B0" />
 
             <TextView
@@ -190,6 +189,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/description" />
 
+            <ImageButton
+                android:id="@+id/city_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/settings"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </android.support.constraint.ConstraintLayout>
 
 
@@ -209,10 +218,10 @@
             android:id="@+id/recycler_view_weather_day"
             android:layout_width="match_parent"
             android:layout_height="115dp"
+            android:background="@color/colorLightWrite"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:background="@color/colorLightWrite"></android.support.v7.widget.RecyclerView>
+            app:layout_constraintStart_toStartOf="parent"></android.support.v7.widget.RecyclerView>
 
     </android.support.constraint.ConstraintLayout>
 

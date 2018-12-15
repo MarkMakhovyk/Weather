@@ -1,4 +1,4 @@
-package com.mydev.android.myweather.scene.hourlyAdapter;
+package com.mydev.android.myweather.ui.hourlyAdapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +20,7 @@ Forecast forecast;
 
     public HourlyWeatherHolder(@NonNull View itemView, Forecast forecast) {
         super(itemView);
-        temp= (TextView) itemView.findViewById(R.id.temp_now);
+        temp = (TextView) itemView.findViewById(R.id.forecast);
         dateTextView = (TextView) itemView.findViewById(R.id.date);
         iconImageView = (ImageView) itemView.findViewById(R.id.icon_weather_hourly);
         this.forecast = forecast;

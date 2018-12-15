@@ -1,4 +1,4 @@
-package com.mydev.android.myweather.scene.dailyAdapter;
+package com.mydev.android.myweather.ui.dailyAdapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -22,7 +22,7 @@ public class DailyForecastHolder extends RecyclerView.ViewHolder {
 
     public DailyForecastHolder(@NonNull View itemView, Forecast forecast, @NonNull OnItemClick onItemClick) {
         super(itemView);
-        temp= (TextView) itemView.findViewById(R.id.temp_now);
+        temp = (TextView) itemView.findViewById(R.id.forecast);
         dateTextView = (TextView) itemView.findViewById(R.id.date);
         iconImageView = (ImageView) itemView.findViewById(R.id.icon_weather_day);
         this.forecast = forecast;

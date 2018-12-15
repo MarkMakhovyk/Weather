@@ -1,4 +1,4 @@
-package com.mydev.android.myweather.network;
+package com.mydev.android.myweather.data.network;
 
 import android.location.Location;
 import android.net.Uri;
@@ -20,16 +20,20 @@ public class OpenWeatherMap {
     private static final String API_KEY = "2842e4fe031b0d2c1fa0294b481ff31a";
 
 
-    Uri ENDPOINT;
+    Uri ENDPOINT = Uri
+            .parse("http://api.openweathermap.org/data/2.5/forecast?")
+            .buildUpon()
+            .appendQueryParameter("lang", "ru")
+            .appendQueryParameter("appid", API_KEY)
+            .build();
 
-    public void buildUrl(String city) {
-        ENDPOINT = Uri
-                .parse("http://api.openweathermap.org/data/2.5/forecast?")
-                .buildUpon()
-                .appendQueryParameter("q", city)
-                .appendQueryParameter("lang", "ru")
-                .appendQueryParameter("appid", API_KEY)
-                .build();
+    public String buildUrl(String city, int count) {
+        Uri.Builder uriBuilder = ENDPOINT.buildUpon().appendQueryParameter("q", city);
+        if (count > 0) {
+            uriBuilder = uriBuilder.appendQueryParameter("cnt", String.valueOf(count));
+        }
+        return uriBuilder.toString();
+
     }
     public void buildUrl(Location location) {
         Log.e(TAG, "buildUrl: " + location.getLatitude() + " " + location.getLongitude() );
@@ -45,6 +49,7 @@ public class OpenWeatherMap {
 
     public byte[] getUrlBytes(String urlSpec) throws IOException {
         URL url = new URL(urlSpec);
+
         HttpURLConnection connection = (HttpURLConnection)url.openConnection();
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -69,16 +74,22 @@ public class OpenWeatherMap {
         }
     }
     public String getUrlString(String urlSpec) throws IOException {
-        return new String(getUrlBytes(urlSpec));
+        byte[] b = getUrlBytes(urlSpec);
+        if (b == null) {
+            return "";
+        }
+
+        return new String(b);
     }
 
-    public Forecast getWeatherForLocation(Location location) {
-        buildUrl(location);
-        return  downloadGalleryItems(ENDPOINT.toString());
+    public Forecast getWeather(String cityName, int count) {
+
+        return downloadGalleryItems(buildUrl(cityName, count));
     }
+
     public Forecast getWeather(String cityName) {
-        buildUrl(cityName);
-        return  downloadGalleryItems(ENDPOINT.toString());
+
+        return downloadGalleryItems(buildUrl(cityName, 0));
     }
 
     private Forecast downloadGalleryItems(String url) {
@@ -87,6 +98,9 @@ public class OpenWeatherMap {
             Log.i(TAG, "url: " + url);
 
             String jsonString = getUrlString(url);
+            if (jsonString == "") {
+                return null;
+            }
             forecast = jsonToWeather(jsonString);
             Log.i(TAG, "Received JSON: " + jsonString);
         } catch (IOException ioe) {

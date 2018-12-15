@@ -1,4 +1,4 @@
-package com.mydev.android.myweather.scene.dailyAdapter;
+package com.mydev.android.myweather.ui.dailyAdapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

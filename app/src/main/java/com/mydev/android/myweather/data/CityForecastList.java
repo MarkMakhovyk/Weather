@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.mydev.android.myweather.data.database.WeatherBaseHelper;
@@ -18,6 +19,8 @@ import static com.mydev.android.myweather.data.database.WeatherDbSchema.WeatherT
 import static com.mydev.android.myweather.data.database.WeatherDbSchema.WeatherTable.Cols.JSON;
 
 public class CityForecastList {
+    private static final String TAG = "Forecast";
+
     private static CityForecastList cityForecastList;
     private Context mContext;
     private SQLiteDatabase mDatabase;
@@ -30,7 +33,7 @@ public class CityForecastList {
         return cityForecastList;
     }
 
-    private CityForecastList(Context context) {
+    public CityForecastList(Context context) {
         mContext = context.getApplicationContext();
         mDatabase = new WeatherBaseHelper(mContext)
                 .getWritableDatabase();
@@ -38,6 +41,7 @@ public class CityForecastList {
 
 
     public void addForecast(String cityName, String json) {
+        Log.e(TAG, "addForecast: ");
         ContentValues values = getContentValues(cityName, json);
         mDatabase.insert(WeatherTable.NAME, null, values);
     }
@@ -80,17 +84,15 @@ public class CityForecastList {
     }
 
     public void updateForecast(String cityName, String json) {
-
+        Log.e(TAG, "updateForecast: ");
         ContentValues values = getContentValues(cityName, json);
         mDatabase.update(WeatherTable.NAME, values,
-                WeatherTable.Cols.CITY_NAME + " = ?",
+                "city_name = ?",
                 new String[]{cityName});
     }
 
     public void updateForecast(Forecast forecast) {
-        Gson gson = new Gson();
-        String json = gson.toJson(forecast);
-        updateForecast(forecast.getCity().getName(), json);
+        updateForecast(forecast.getCity().getName(), forecastToJson(forecast));
     }
 
     private WeatherCursorWrapper queryForecast(String whereClause, String[] whereArgs) {
