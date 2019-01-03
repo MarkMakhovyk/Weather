@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,34 +11,27 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mydev.android.myweather.R;
 import com.mydev.android.myweather.data.CityForecastList;
-import com.mydev.android.myweather.data.model.Forecast;
-import com.mydev.android.myweather.data.model.ItemListWeather;
+import com.mydev.android.myweather.data.model.weather.Forecast;
+import com.mydev.android.myweather.data.model.weather.ItemListWeather;
 import com.mydev.android.myweather.data.network.ForecastTack;
-import com.mydev.android.myweather.ui.dailyAdapter.DailyForecastAdapter;
-import com.mydev.android.myweather.ui.dailyAdapter.DailyForecastHolder;
-import com.mydev.android.myweather.ui.hourlyAdapter.HourlyWeatherAdapter;
-
-import java.util.Date;
+import com.mydev.android.myweather.ui.adapter.DailyForecastAdapter;
+import com.mydev.android.myweather.ui.adapter.HourlyWeatherAdapter;
 
 import Utills.GetInfoWeather;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DataWeatherFragment extends Fragment implements DailyForecastHolder.OnItemClick {
-
-    private static final String TAG = "Forecast";
-    GetInfoWeather getInfoWeather = null;
+public class DataWeatherFragment extends Fragment implements DailyForecastAdapter.OnItemClick {
     private static final String CITY_NAME = "cityName";
+    private static final int COUNT_FORECAST_PER_DAY = 8;
 
-
+    GetInfoWeather getInfoWeather = null;
     Forecast forecast = null;
 
     @BindView(R.id.city)
@@ -51,7 +43,7 @@ public class DataWeatherFragment extends Fragment implements DailyForecastHolder
     @BindView(R.id.recycler_view_weather_hourly)
     RecyclerView hourlyRecyclerView;
 
-    @BindView(R.id.forecast)
+    @BindView(R.id.temp_now)
     TextView tempNow;
 
     @BindView(R.id.icon_weather_today)
@@ -71,6 +63,7 @@ public class DataWeatherFragment extends Fragment implements DailyForecastHolder
 
     @BindView(R.id.clouds)
     TextView clouds;
+
     @BindView(R.id.swipe)
     SwipeRefreshLayout swipe;
 
@@ -78,13 +71,12 @@ public class DataWeatherFragment extends Fragment implements DailyForecastHolder
     ImageButton settings;
 
 
-
     DailyForecastAdapter dayAdapter;
     HourlyWeatherAdapter hourlyAdapter;
     ForecastTack forecastTack;
     String cityName;
     CityForecastList cityForecastList;
-    Window window;
+
 
     public static Fragment newInstance(String city) {
         Bundle args = new Bundle();
@@ -100,31 +92,31 @@ public class DataWeatherFragment extends Fragment implements DailyForecastHolder
         super.onCreate(savedInstanceState);
         cityName = (String) getArguments().getSerializable(CITY_NAME);
         cityForecastList = CityForecastList.get(getContext());
-
         forecastTack = new ForecastTack(getContext(), cityName);
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.data_weather, container, false);
-        window = getActivity().getWindow();
+
         ButterKnife.bind(this, view);
-        loadForecast();
-        setColor();
+        updateForecast();
 
         dayRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 5));
 
         hourlyRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 7));
 
-
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                ForecastTack ft = new ForecastTack(getContext(), cityName);
-                ft.execute();
+                forecastTack = new ForecastTack(getContext(), cityName);
+                forecastTack.execute();
                 updateForecast();
                 swipe.setRefreshing(false);
+
             }
         });
         settings.setOnClickListener(new View.OnClickListener() {
@@ -134,64 +126,29 @@ public class DataWeatherFragment extends Fragment implements DailyForecastHolder
             }
         });
 
+
         return view;
     }
 
-    private void updateForecast() {
 
-        forecast = cityForecastList.getForecast(cityName);
-        if (forecast != null) {
+    private void updateForecast() {
+        if (cityForecastList.getForecast(cityName) != null) {
+            forecast = cityForecastList.getForecast(cityName);
             setDataForecast();
         }
-    }
 
-    private void loadForecast() {
-        forecast = cityForecastList.getForecast(cityName);
-        if (forecast == null || tiredForecast(forecast)) {
-            forecastTack.execute();
-            if (cityForecastList.getForecast(cityName) == null) {
-                Snackbar.make(hourlyRecyclerView, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        }
-        updateForecast();
-    }
 
-    private boolean tiredForecast(Forecast forecast) {
-        if (forecast == null) {
-            return true;
-        }
-        boolean ok = true;
-        while (ok) {
-            ok = false;
-            long date = forecast.getList().get(0).getDt();
-            long dateNow = new Date().getTime();
-            if (date + 10800000 > dateNow) {
-                ok = true;
-                forecast.getList().remove(0);
-            }
-        }
-        cityForecastList.updateForecast(forecast);
-        return false;
     }
 
     private void setDataForecast() {
-        setColor();
         setDataRecycleView();
         setDataWeatherToday();
     }
 
-    private void setColor() {
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(getResources().getColor(R.color.colorYellow));
-        swipe.setBackgroundColor(getResources().getColor(R.color.colorYellow));
-    }
-
-
-
     private void setDataRecycleView() {
         dayAdapter = new DailyForecastAdapter(forecast, this);
+        dayRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),
+                dayAdapter.countOfWeatherDay()));
         dayRecyclerView.setAdapter(dayAdapter);
         hourlyAdapter = new HourlyWeatherAdapter(forecast, forecast.getList().get(0));
         hourlyRecyclerView.setAdapter(hourlyAdapter);

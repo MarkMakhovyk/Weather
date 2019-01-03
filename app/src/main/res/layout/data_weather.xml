@@ -5,7 +5,7 @@
     android:id="@+id/swipe"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/colorTransparent"
     android:padding="1dp">
 
 
@@ -20,12 +20,13 @@
             android:id="@+id/constraintLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
             android:background="@color/colorLightWrite"
             app:layout_constraintBottom_toTopOf="@+id/recycler_view_weather_hourly"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/linearLayout3"
@@ -61,6 +62,7 @@
                         android:layout_marginBottom="4dp"
                         android:layout_weight="1"
                         android:textSize="18sp"
+                        android:textStyle="bold"
                         tools:text="80%" />
 
                 </LinearLayout>
@@ -87,6 +89,7 @@
                         android:layout_marginBottom="4dp"
                         android:layout_weight="1"
                         android:textSize="18sp"
+                        android:textStyle="bold"
                         tools:text="80%" />
 
                 </LinearLayout>
@@ -113,6 +116,7 @@
                         android:layout_marginBottom="4dp"
                         android:layout_weight="1"
                         android:textSize="18sp"
+                        android:textStyle="bold"
                         tools:text="750м/c" />
                 </LinearLayout>
 
@@ -138,30 +142,35 @@
                         android:layout_marginBottom="4dp"
                         android:layout_weight="1"
                         android:textSize="18sp"
+                        android:textStyle="bold"
                         tools:text="750мм" />
                 </LinearLayout>
             </LinearLayout>
 
             <TextView
                 android:id="@+id/city"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:gravity="center_vertical|center_horizontal"
+                android:layout_marginEnd="8dp"
+                android:gravity="left"
                 android:textSize="32sp"
+                app:layout_constraintEnd_toStartOf="@+id/city_list"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Slavytich" />
 
 
             <TextView
-                android:id="@+id/forecast"
+                android:id="@+id/temp_now"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
                 android:textSize="80sp"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/city_list"
                 tools:text="8 \u00B0" />
@@ -179,13 +188,11 @@
 
             <ImageView
                 android:id="@+id/icon_weather_today"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginStart="16dp"
                 android:tint="@color/colorWrite"
                 app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/description" />
 
@@ -205,13 +212,10 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view_weather_hourly"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="115dp"
             android:layout_marginBottom="8dp"
             android:scrollbars="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/recycler_view_weather_day"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"></android.support.v7.widget.RecyclerView>
+            app:layout_constraintBottom_toTopOf="@+id/recycler_view_weather_day"></android.support.v7.widget.RecyclerView>
 
 
         <android.support.v7.widget.RecyclerView
@@ -224,5 +228,4 @@
             app:layout_constraintStart_toStartOf="parent"></android.support.v7.widget.RecyclerView>
 
     </android.support.constraint.ConstraintLayout>
-
 </android.support.v4.widget.SwipeRefreshLayout>

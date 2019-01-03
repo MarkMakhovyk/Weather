@@ -4,8 +4,7 @@ import android.database.Cursor;
 import android.database.CursorWrapper;
 
 import com.mydev.android.myweather.data.database.WeatherDbSchema.WeatherTable;
-import com.mydev.android.myweather.data.model.Forecast;
-
+import com.mydev.android.myweather.data.model.weather.Forecast;
 
 import Utills.Json;
 
@@ -16,7 +15,6 @@ public class WeatherCursorWrapper extends CursorWrapper {
     }
 
     public Forecast getWeather() {
-        String cityName = getString(getColumnIndex(WeatherTable.Cols.CITY_NAME));
         String json = getString(getColumnIndex(WeatherTable.Cols.JSON));
         Forecast forecast = Json.jsonToWeather(json);
 

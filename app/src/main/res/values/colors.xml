@@ -3,12 +3,37 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="colorLightWrite">#7cffffff</color>
+    <color name="colorLightWrite">#55ffffff</color>
     <color name="colorWrite">#f1ffffff</color>
     <color name="colorYellow">#ff9410</color>
     <color name="colorBlue">#c1d1ea</color>
+    <color name="colorTransparent">#00ffffff</color>
 
 
-    <color name="black_overlay">#66000000</color>
+    <color name="black_overlay">#c0000000</color>
 
+
+    <color name="cky_day">#ffb012</color>
+    <color name="cky_night">#0202ff</color>
+    <color name="few_clouds_day">#de935a</color>
+    <color name="fel_clouds_night">#323289</color>
+    <color name="clouds">#c30073ff</color>
+    <color name="rain">#9f95ae</color>
+    <color name="storm">#73380e</color>
+    <color name="snow">#83919c</color>
+    <color name="mist">#8b918b</color>
+
+
+    <array name="backgroung_color">
+        <item>@color/cky_day</item>
+        <item>@color/cky_night</item>
+        <item>@color/few_clouds_day</item>
+        <item>@color/fel_clouds_night</item>
+        <item>@color/clouds</item>
+        <item>@color/rain</item>
+        <item>@color/storm</item>
+        <item>@color/snow</item>
+        <item>@color/mist</item>
+    </array>
 </resources>
+

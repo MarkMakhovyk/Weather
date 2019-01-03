@@ -4,13 +4,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.mydev.android.myweather.data.database.WeatherBaseHelper;
 import com.mydev.android.myweather.data.database.WeatherCursorWrapper;
 import com.mydev.android.myweather.data.database.WeatherDbSchema.WeatherTable;
-import com.mydev.android.myweather.data.model.Forecast;
+import com.mydev.android.myweather.data.model.weather.Forecast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +18,6 @@ import static com.mydev.android.myweather.data.database.WeatherDbSchema.WeatherT
 import static com.mydev.android.myweather.data.database.WeatherDbSchema.WeatherTable.Cols.JSON;
 
 public class CityForecastList {
-    private static final String TAG = "Forecast";
-
     private static CityForecastList cityForecastList;
     private Context mContext;
     private SQLiteDatabase mDatabase;
@@ -29,27 +26,26 @@ public class CityForecastList {
         if (cityForecastList == null) {
             cityForecastList = new CityForecastList(context);
         }
-
         return cityForecastList;
     }
 
-    public CityForecastList(Context context) {
+    private CityForecastList(Context context) {
         mContext = context.getApplicationContext();
-        mDatabase = new WeatherBaseHelper(mContext)
-                .getWritableDatabase();
+        mDatabase = new WeatherBaseHelper(mContext).getWritableDatabase();
     }
 
 
-    public void addForecast(String cityName, String json) {
-        Log.e(TAG, "addForecast: ");
+    private void addForecast(String cityName, String json) {
         ContentValues values = getContentValues(cityName, json);
         mDatabase.insert(WeatherTable.NAME, null, values);
     }
 
-    public String forecastToJson(Forecast forecast) {
-        Gson gson = new Gson();
-        String json = gson.toJson(forecast);
-        return json;
+    private void updateForecast(String cityName, String json) {
+
+        ContentValues values = getContentValues(cityName, json);
+        mDatabase.update(WeatherTable.NAME, values,
+                "city_name = ?",
+                new String[]{cityName});
     }
 
     public List<Forecast> getForecasts() {
@@ -68,10 +64,12 @@ public class CityForecastList {
     }
 
     public Forecast getForecast(String cityName) {
+
         WeatherCursorWrapper cursor = queryForecast(
                 WeatherTable.Cols.CITY_NAME + " = ?",
                 new String[]{cityName}
         );
+
         try {
             if (cursor.getCount() == 0) {
                 return null;
@@ -83,16 +81,36 @@ public class CityForecastList {
         }
     }
 
-    public void updateForecast(String cityName, String json) {
-        Log.e(TAG, "updateForecast: ");
-        ContentValues values = getContentValues(cityName, json);
-        mDatabase.update(WeatherTable.NAME, values,
-                "city_name = ?",
-                new String[]{cityName});
+
+    public void addOrUpdate(Forecast forecast) {
+
+        boolean isUpdate = false;
+
+        if (forecast == null) {
+            return;
+        }
+        List<Forecast> list = getForecasts();
+        for (int i = 0; i < list.size(); i++) {
+            if (forecast.getCity().getName().equals(list.get(i).getCity().getName())) {
+                updateForecast(forecast.getCity().getName(), forecastToJson(forecast));
+                isUpdate = true;
+            }
+        }
+        if (!isUpdate) {
+            addForecast(forecast.getCity().getName(),
+                    forecastToJson(forecast));
+        }
     }
 
-    public void updateForecast(Forecast forecast) {
-        updateForecast(forecast.getCity().getName(), forecastToJson(forecast));
+    public void deleteForecast(String cityName) {
+        mDatabase.delete(WeatherTable.NAME, CITY_NAME + " = ?", new String[]{cityName});
+    }
+
+
+    public String forecastToJson(Forecast forecast) {
+        Gson gson = new Gson();
+        String json = gson.toJson(forecast);
+        return json;
     }
 
     private WeatherCursorWrapper queryForecast(String whereClause, String[] whereArgs) {
