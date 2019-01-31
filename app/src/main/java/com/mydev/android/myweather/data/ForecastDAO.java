@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 import com.mydev.android.myweather.data.database.WeatherBaseHelper;
 import com.mydev.android.myweather.data.database.WeatherCursorWrapper;
 import com.mydev.android.myweather.data.database.WeatherDbSchema.WeatherTable;
-import com.mydev.android.myweather.data.model.weather.Forecast;
+import com.mydev.android.myweather.data.model.Forecast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,19 +17,20 @@ import java.util.List;
 import static com.mydev.android.myweather.data.database.WeatherDbSchema.WeatherTable.Cols.CITY_NAME;
 import static com.mydev.android.myweather.data.database.WeatherDbSchema.WeatherTable.Cols.JSON;
 
-public class CityForecastList {
-    private static CityForecastList cityForecastList;
+public class ForecastDAO {
+
+    private static ForecastDAO forecastDAO;
     private Context mContext;
     private SQLiteDatabase mDatabase;
 
-    public static CityForecastList get(Context context) {
-        if (cityForecastList == null) {
-            cityForecastList = new CityForecastList(context);
+    public static ForecastDAO get(Context context) {
+        if (forecastDAO == null) {
+            forecastDAO = new ForecastDAO(context);
         }
-        return cityForecastList;
+        return forecastDAO;
     }
 
-    private CityForecastList(Context context) {
+    private ForecastDAO(Context context) {
         mContext = context.getApplicationContext();
         mDatabase = new WeatherBaseHelper(mContext).getWritableDatabase();
     }
@@ -40,8 +41,9 @@ public class CityForecastList {
         mDatabase.insert(WeatherTable.NAME, null, values);
     }
 
-    private void updateForecast(String cityName, String json) {
-
+    public void updateForecast(Forecast forecast) {
+        String cityName = forecast.getCity().getName();
+        String json = forecastToJson(forecast);
         ContentValues values = getContentValues(cityName, json);
         mDatabase.update(WeatherTable.NAME, values,
                 "city_name = ?",
@@ -92,7 +94,7 @@ public class CityForecastList {
         List<Forecast> list = getForecasts();
         for (int i = 0; i < list.size(); i++) {
             if (forecast.getCity().getName().equals(list.get(i).getCity().getName())) {
-                updateForecast(forecast.getCity().getName(), forecastToJson(forecast));
+                updateForecast(forecast);
                 isUpdate = true;
             }
         }

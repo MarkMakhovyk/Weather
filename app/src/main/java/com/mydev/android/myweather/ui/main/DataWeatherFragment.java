@@ -1,4 +1,4 @@
-package com.mydev.android.myweather.ui;
+package com.mydev.android.myweather.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,20 +16,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mydev.android.myweather.R;
-import com.mydev.android.myweather.data.CityForecastList;
-import com.mydev.android.myweather.data.model.weather.Forecast;
-import com.mydev.android.myweather.data.model.weather.ItemListWeather;
-import com.mydev.android.myweather.data.network.ForecastTack;
+import com.mydev.android.myweather.data.ForecastDAO;
+import com.mydev.android.myweather.data.model.Forecast;
+import com.mydev.android.myweather.data.model.ItemListWeather;
+import com.mydev.android.myweather.data.network.GetForecast;
 import com.mydev.android.myweather.ui.adapter.DailyForecastAdapter;
 import com.mydev.android.myweather.ui.adapter.HourlyWeatherAdapter;
+import com.mydev.android.myweather.ui.list.CityListActivity;
 
 import Utills.GetInfoWeather;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DataWeatherFragment extends Fragment implements DailyForecastAdapter.OnItemClick {
+public class DataWeatherFragment extends Fragment implements DailyForecastAdapter.OnItemClick, GetForecast.CallbackLoadForecast {
     private static final String CITY_NAME = "cityName";
-    private static final int COUNT_FORECAST_PER_DAY = 8;
 
     GetInfoWeather getInfoWeather = null;
     Forecast forecast = null;
@@ -73,9 +73,9 @@ public class DataWeatherFragment extends Fragment implements DailyForecastAdapte
 
     DailyForecastAdapter dayAdapter;
     HourlyWeatherAdapter hourlyAdapter;
-    ForecastTack forecastTack;
+    GetForecast getForecast;
     String cityName;
-    CityForecastList cityForecastList;
+    ForecastDAO forecastDAO;
 
 
     public static Fragment newInstance(String city) {
@@ -91,8 +91,9 @@ public class DataWeatherFragment extends Fragment implements DailyForecastAdapte
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         cityName = (String) getArguments().getSerializable(CITY_NAME);
-        cityForecastList = CityForecastList.get(getContext());
-        forecastTack = new ForecastTack(getContext(), cityName);
+        forecastDAO = ForecastDAO.get(getContext());
+        getForecast = new GetForecast(this);
+        forecast = forecastDAO.getForecast(cityName);
     }
 
     @Nullable
@@ -106,17 +107,12 @@ public class DataWeatherFragment extends Fragment implements DailyForecastAdapte
         updateForecast();
 
         dayRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 5));
-
         hourlyRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 7));
 
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                forecastTack = new ForecastTack(getContext(), cityName);
-                forecastTack.execute();
-                updateForecast();
-                swipe.setRefreshing(false);
-
+                getForecast.getWeatherByCity(cityName);
             }
         });
         settings.setOnClickListener(new View.OnClickListener() {
@@ -126,18 +122,12 @@ public class DataWeatherFragment extends Fragment implements DailyForecastAdapte
             }
         });
 
-
         return view;
     }
 
 
     private void updateForecast() {
-        if (cityForecastList.getForecast(cityName) != null) {
-            forecast = cityForecastList.getForecast(cityName);
-            setDataForecast();
-        }
-
-
+        setDataForecast();
     }
 
     private void setDataForecast() {
@@ -174,4 +164,13 @@ public class DataWeatherFragment extends Fragment implements DailyForecastAdapte
         }
     }
 
+    @Override
+    public void onResponse(Forecast forecast) {
+        if (forecast != null)
+            forecastDAO.updateForecast(forecast);
+
+        this.forecast = forecast;
+        swipe.setRefreshing(false);
+        updateForecast();
+    }
 }

@@ -1,14 +1,22 @@
+package com.mydev.android.myweather.data.model;
 
-package com.mydev.android.myweather.cityUA;
-
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class City {
 
-
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+    @SerializedName("name")
+    @Expose
+    private String name;
     private String lat;
     private String lon;
-    private String name;
     private String regions;
+
+    public City() {
+    }
 
     public City(String name, String regions, String lat, String lon) {
         this.lat = lat;
@@ -42,6 +50,14 @@ public class City {
         this.lon = lon;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -49,5 +65,9 @@ public class City {
     public void setName(String name) {
         this.name = name;
     }
+
+
+
+
 
 }

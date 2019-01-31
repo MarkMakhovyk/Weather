@@ -13,9 +13,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:name=".data.network.App"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.DataWeatherActivity"
+            android:name=".ui.main.DataWeatherActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
             >
             <intent-filter>
@@ -24,13 +25,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.CityListActivity"
+            android:name=".ui.list.CityListActivity"
             android:label="@string/title_activity_city_list"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
 
-                android:value="com.mydev.android.myweather.ui.DataWeatherActivity" />
+                android:value="com.mydev.android.myweather.ui.main.DataWeatherActivity" />
         </activity>
     </application>
 

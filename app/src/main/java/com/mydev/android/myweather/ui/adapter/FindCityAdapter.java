@@ -6,29 +6,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.mydev.android.myweather.R;
-import com.mydev.android.myweather.cityUA.City;
-import com.mydev.android.myweather.data.network.CityPreference;
-import com.mydev.android.myweather.data.network.ForecastTack;
+import com.mydev.android.myweather.data.model.City;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-import Utills.Utills;
 
 public class FindCityAdapter extends RecyclerView.Adapter<ForecastHolder> {
-    private ResultFind resultFind;
+    private findCityClick findCityClick;
 
     private List<City> cities;
     private Context context;
 
 
-    public FindCityAdapter(List<City> cities, Context context, @NonNull ResultFind resultFind) {
+    public FindCityAdapter(List<City> cities, Context context, @NonNull findCityClick findCityClick) {
         this.cities = cities;
         this.context = context;
-        this.resultFind = resultFind;
+        this.findCityClick = findCityClick;
     }
 
     @NonNull
@@ -48,23 +42,7 @@ public class FindCityAdapter extends RecyclerView.Adapter<ForecastHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Utills.isOnline(context)) {
-                    ForecastTack forecastTack = new ForecastTack(context,
-                            city.getLon(), city.getLat());
-                    forecastTack.execute();
-                    try {
-                        if (forecastTack.get() != null) {
-                            CityPreference.setCityVisible(context, forecastTack.get().getCity().getName());
-                            resultFind.backPress();
-                        }
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                } else
-                    Toast.makeText(context, "Нету подключения, проверте соидинение", Toast.LENGTH_LONG).show();
-
+                findCityClick.onClickFindCity(city);
             }
         });
     }
@@ -74,8 +52,8 @@ public class FindCityAdapter extends RecyclerView.Adapter<ForecastHolder> {
         return cities.size();
     }
 
-    public interface ResultFind {
-        void backPress();
+    public interface findCityClick {
+        void onClickFindCity(City city);
     }
 
 }

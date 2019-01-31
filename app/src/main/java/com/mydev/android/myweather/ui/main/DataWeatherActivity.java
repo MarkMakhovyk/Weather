@@ -1,4 +1,4 @@
-package com.mydev.android.myweather.ui;
+package com.mydev.android.myweather.ui.main;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
@@ -13,10 +13,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.mydev.android.myweather.R;
-import com.mydev.android.myweather.data.CityForecastList;
-import com.mydev.android.myweather.data.model.weather.Forecast;
+import com.mydev.android.myweather.data.ForecastDAO;
+import com.mydev.android.myweather.data.model.Forecast;
 import com.mydev.android.myweather.data.network.CityPreference;
 import com.mydev.android.myweather.data.network.LoadWeather;
+import com.mydev.android.myweather.ui.list.CityListActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,7 +27,6 @@ import Utills.GetInfoWeather;
 
 public class DataWeatherActivity extends AppCompatActivity {
 
-    private static final String TAG = "weather_activity";
     private ViewPager cityForecastPagers;
     private List<String> cityNameList = new ArrayList<>();
     private int lastBackgroundColor = 0;
@@ -60,7 +60,7 @@ public class DataWeatherActivity extends AppCompatActivity {
     }
 
     private void getListCity() {
-        CityForecastList cfl = CityForecastList.get(this);
+        ForecastDAO cfl = ForecastDAO.get(this);
         List<Forecast> forecasts = cfl.getForecasts();
         cityNameList.clear();
 

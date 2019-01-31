@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mydev.android.myweather.R;
-import com.mydev.android.myweather.data.model.weather.Forecast;
-import com.mydev.android.myweather.data.model.weather.ItemListWeather;
+import com.mydev.android.myweather.data.model.Forecast;
+import com.mydev.android.myweather.data.model.ItemListWeather;
 
 import java.util.Date;
 import java.util.List;

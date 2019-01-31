@@ -2,7 +2,6 @@ package com.mydev.android.myweather.data.network;
 
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -26,16 +25,14 @@ public class GPSLocation {
     private MyLocation myLocation;
     private GoogleApiClient mClient;
     private Context context;
-    private Activity activity;
     private static final String[] LOCATION_PERMISSIONS = new String[]{
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION,
     };
 
-    public GPSLocation(Context context, Activity activity, final MyLocation myLocation) {
+    public GPSLocation(Context context, final MyLocation myLocation) {
         this.myLocation = myLocation;
         this.context = context;
-        this.activity = activity;
     }
 
     public void addClient() {

@@ -4,8 +4,8 @@ import android.content.Context;
 import android.util.Log;
 
 import com.mydev.android.myweather.R;
-import com.mydev.android.myweather.data.CityForecastList;
-import com.mydev.android.myweather.data.model.weather.Forecast;
+import com.mydev.android.myweather.data.ForecastDAO;
+import com.mydev.android.myweather.data.model.Forecast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -24,7 +24,9 @@ public class GetInfoWeather {
         return DateFormat.getDateInstance(DateFormat.SHORT, new Locale("ru")).format(new Date(date * 1000L))
                 + DateFormat.getTimeInstance(DateFormat.SHORT, new Locale("ru")).format(new Date(date * 1000L))
                 ;
-    } public String getDay(int index) {
+    }
+
+    public String getDay(int index) {
         return new SimpleDateFormat("EEE", new Locale("ru"))
                 .format(new Date(forecast.getList().get(index).getDt() * 1000L));
 
@@ -73,7 +75,7 @@ public class GetInfoWeather {
     }
 
     public static int getBackgroundColor(int indexCity, Context context) {
-        Forecast forecast = CityForecastList.get(context).getForecasts().get(indexCity);
+        Forecast forecast = ForecastDAO.get(context).getForecasts().get(indexCity);
         String icon = forecast.getList().get(0).getWeatherDescription().get(0).getIcon();
         return getColor(icon, context);
     }

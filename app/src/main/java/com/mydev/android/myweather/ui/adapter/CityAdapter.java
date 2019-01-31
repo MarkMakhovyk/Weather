@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mydev.android.myweather.R;
-import com.mydev.android.myweather.data.CityForecastList;
-import com.mydev.android.myweather.data.model.weather.Forecast;
+import com.mydev.android.myweather.data.ForecastDAO;
+import com.mydev.android.myweather.data.model.Forecast;
 
 import java.util.List;
 
@@ -43,8 +43,8 @@ public class CityAdapter extends RecyclerView.Adapter<ForecastHolder> {
         holder.itemView.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CityForecastList.get(context).deleteForecast(forecast.getCity().getName());
-                list = CityForecastList.get(context).getForecasts();
+                ForecastDAO.get(context).deleteForecast(forecast.getCity().getName());
+                list = ForecastDAO.get(context).getForecasts();
                 CityAdapter.this.notifyDataSetChanged();
             }
         });

@@ -4,7 +4,7 @@ import android.database.Cursor;
 import android.database.CursorWrapper;
 
 import com.mydev.android.myweather.data.database.WeatherDbSchema.WeatherTable;
-import com.mydev.android.myweather.data.model.weather.Forecast;
+import com.mydev.android.myweather.data.model.Forecast;
 
 import Utills.Json;
 

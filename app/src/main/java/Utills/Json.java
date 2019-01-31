@@ -2,7 +2,7 @@ package Utills;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.mydev.android.myweather.data.model.weather.Forecast;
+import com.mydev.android.myweather.data.model.Forecast;
 
 public class Json {
     public static Forecast jsonToWeather(String json) {

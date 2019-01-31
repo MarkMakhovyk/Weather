@@ -2,6 +2,8 @@ package com.mydev.android.myweather.cityUA;
 
 import android.content.Context;
 
+import com.mydev.android.myweather.data.model.City;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
